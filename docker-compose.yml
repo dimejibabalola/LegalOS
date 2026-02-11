@@ -1,0 +1,197 @@
+# Babalola Legal OS - Docker Compose Configuration
+# Law Firm Management Platform
+# ================================================
+
+version: '3.9'
+
+services:
+  # ================================================
+  # Frontend Service - React Application with Vite
+  # ================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development  # Change to 'production' for production builds
+    container_name: babalola-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:3001/api
+      - VITE_APP_NAME=Babalola Legal OS
+      - VITE_APP_VERSION=1.0.0
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - uploads:/app/public/uploads
+    depends_on:
+      - backend
+    networks:
+      - babalola-network
+    command: npm run dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ================================================
+  # Backend Service - Node.js API Server
+  # ================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development  # Change to 'production' for production builds
+    container_name: babalola-backend
+    ports:
+      - "3001:3001"
+    environment:
+      # Database Configuration
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=babalola_legal
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      # JWT Configuration
+      - JWT_SECRET=your-secret-key-change-in-production
+      - JWT_EXPIRES_IN=7d
+      # Redis Configuration
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
+      # Application Configuration
+      - NODE_ENV=development
+      - PORT=3001
+      - API_PREFIX=/api
+      # File Upload Configuration
+      - UPLOAD_DIR=/app/uploads
+      - MAX_FILE_SIZE=10485760
+      # Email Configuration (placeholder)
+      - SMTP_HOST=
+      - SMTP_PORT=587
+      - SMTP_USER=
+      - SMTP_PASS=
+      # Logging
+      - LOG_LEVEL=debug
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - babalola-network
+    command: npm run dev
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ================================================
+  # PostgreSQL Database Service
+  # ================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: babalola-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=babalola_legal
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/init:/docker-entrypoint-initdb.d
+    networks:
+      - babalola-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d babalola_legal"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ================================================
+  # Redis Cache/Session Service
+  # ================================================
+  redis:
+    image: redis:7-alpine
+    container_name: babalola-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - babalola-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # ================================================
+  # Caddy Reverse Proxy
+  # ================================================
+  caddy:
+    image: caddy:2-alpine
+    container_name: babalola-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"  # HTTP/3
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - babalola-network
+    restart: unless-stopped
+
+# ================================================
+# Docker Networks
+# ================================================
+networks:
+  babalola-network:
+    driver: bridge
+    name: babalola-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# ================================================
+# Docker Volumes
+# ================================================
+volumes:
+  postgres_data:
+    driver: local
+    name: babalola-postgres-data
+  redis_data:
+    driver: local
+    name: babalola-redis-data
+  uploads:
+    driver: local
+    name: babalola-uploads
+  caddy_data:
+    driver: local
+    name: babalola-caddy-data
+  caddy_config:
+    driver: local
+    name: babalola-caddy-config
