@@ -202,7 +202,7 @@ const parseCSVLine = (line) => {
   return result;
 };
 
-module.exports = {
+export {
   formatCurrency,
   formatDate,
   formatDuration,

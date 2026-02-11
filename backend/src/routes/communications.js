@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const communicationController = require('../controllers/communicationController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import communicationController from '../controllers/communicationController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createCommunicationValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -17,4 +17,4 @@ router.get('/:id', communicationController.getCommunicationById);
 router.put('/:id', communicationController.updateCommunication);
 router.delete('/:id', communicationController.deleteCommunication);
 
-module.exports = router;
+export default router;

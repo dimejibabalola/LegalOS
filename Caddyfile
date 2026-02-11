@@ -1,0 +1,59 @@
+# Babalola Legal OS - Caddy Configuration
+# Reverse Proxy for Law Firm Management Platform
+
+{
+    auto_https off
+}
+
+# Frontend - Main Application
+app.localhost {
+    reverse_proxy frontend:3000
+    encode gzip
+    
+    header {
+        X-Frame-Options DENY
+        X-Content-Type-Options nosniff
+        X-XSS-Protection "1; mode=block"
+    }
+    
+    log {
+        output file /data/access-frontend.log
+    }
+}
+
+# Backend API
+api.localhost {
+    reverse_proxy backend:3001
+    encode gzip
+    
+    header {
+        X-Frame-Options DENY
+        X-Content-Type-Options nosniff
+    }
+    
+    log {
+        output file /data/access-api.log
+    }
+}
+
+# Direct localhost access (for development)
+:80 {
+    handle /api/* {
+        reverse_proxy backend:3001
+    }
+    
+    handle {
+        reverse_proxy frontend:3000
+    }
+    
+    encode gzip
+    
+    header {
+        X-Frame-Options DENY
+        X-Content-Type-Options nosniff
+    }
+    
+    log {
+        output file /data/access.log
+    }
+}

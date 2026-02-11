@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import compression from 'compression';
 
 // Load environment variables
 dotenv.config();
@@ -9,7 +12,10 @@ import routes from './routes/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
+
+// Security middleware
+app.use(helmet());
 
 // CORS configuration
 const corsOptions = {
@@ -23,14 +29,29 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(compression());
 
-// Request logging (development only)
+// Request logging
 if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
   app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
   });
+} else {
+  app.use(morgan('combined'));
 }
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    success: true,
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    version: '1.0.0'
+  });
+});
 
 // API routes
 app.use('/api', routes);
@@ -59,7 +80,7 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║                                                            ║

@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const documentController = require('../controllers/documentController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import documentController from '../controllers/documentController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createDocumentValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -16,4 +16,4 @@ router.post('/', createDocumentValidation, documentController.createDocument);
 router.get('/:id', documentController.getDocumentById);
 router.delete('/:id', documentController.deleteDocument);
 
-module.exports = router;
+export default router;

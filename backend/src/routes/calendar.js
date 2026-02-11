@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const calendarController = require('../controllers/calendarController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import calendarController from '../controllers/calendarController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createCalendarEventValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -18,4 +18,4 @@ router.get('/:id', calendarController.getEventById);
 router.put('/:id', calendarController.updateEvent);
 router.delete('/:id', calendarController.deleteEvent);
 
-module.exports = router;
+export default router;

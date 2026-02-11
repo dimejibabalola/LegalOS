@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllActivities = async (req, res, next) => {
   try {
@@ -113,7 +113,7 @@ const getRecentActivities = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllActivities,
   logActivity,
   getRecentActivities

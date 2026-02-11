@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const userController = require('../controllers/userController');
-const { authenticate, authorize } = require('../middleware/auth');
-const { paginationValidation } = require('../middleware/validation');
+import userController from '../controllers/userController.js';
+import { authenticate, authorize } from '../middleware/auth.js';
+import { paginationValidation } from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -13,4 +13,4 @@ router.get('/:id', userController.getUserById);
 router.put('/:id', userController.updateUser);
 router.put('/:id/password', userController.changePassword);
 
-module.exports = router;
+export default router;

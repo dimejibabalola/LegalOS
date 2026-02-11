@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const db = require('../config/database');
+import jwt from 'jsonwebtoken';
+import db from '../config/database.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
@@ -84,4 +84,4 @@ const authorize = (...roles) => {
   };
 };
 
-module.exports = { authenticate, authorize };
+export { authenticate, authorize };

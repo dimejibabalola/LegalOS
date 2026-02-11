@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const generateInvoiceNumber = async () => {
   const year = new Date().getFullYear();
@@ -357,7 +357,7 @@ const payInvoice = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllInvoices,
   createInvoice,
   getInvoiceById,

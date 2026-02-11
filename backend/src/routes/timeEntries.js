@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const timeEntryController = require('../controllers/timeEntryController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import timeEntryController from '../controllers/timeEntryController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createTimeEntryValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -18,4 +18,4 @@ router.get('/:id', timeEntryController.getTimeEntryById);
 router.put('/:id', timeEntryController.updateTimeEntry);
 router.delete('/:id', timeEntryController.deleteTimeEntry);
 
-module.exports = router;
+export default router;

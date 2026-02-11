@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getRevenueReport = async (req, res, next) => {
   try {
@@ -234,7 +234,7 @@ const getAgingReport = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getRevenueReport,
   getUtilizationReport,
   getAgingReport

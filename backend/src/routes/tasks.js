@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const taskController = require('../controllers/taskController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import taskController from '../controllers/taskController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createTaskValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -18,4 +18,4 @@ router.get('/:id', taskController.getTaskById);
 router.put('/:id', taskController.updateTask);
 router.delete('/:id', taskController.deleteTask);
 
-module.exports = router;
+export default router;

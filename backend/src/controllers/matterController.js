@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllMatters = async (req, res, next) => {
   try {
@@ -380,7 +380,7 @@ const getMatterCommunications = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllMatters,
   createMatter,
   getMatterById,

@@ -1,5 +1,5 @@
-const bcrypt = require('bcryptjs');
-const db = require('../config/database');
+import bcrypt from 'bcryptjs';
+import db from '../config/database.js';
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -208,7 +208,7 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllUsers,
   getUserById,
   updateUser,

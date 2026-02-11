@@ -1,20 +1,20 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 // Import route modules
-const authRoutes = require('./auth');
-const clientRoutes = require('./clients');
-const matterRoutes = require('./matters');
-const invoiceRoutes = require('./invoices');
-const timeEntryRoutes = require('./timeEntries');
-const taskRoutes = require('./tasks');
-const documentRoutes = require('./documents');
-const communicationRoutes = require('./communications');
-const calendarRoutes = require('./calendar');
-const conflictRoutes = require('./conflicts');
-const reportRoutes = require('./reports');
-const activityRoutes = require('./activities');
-const userRoutes = require('./users');
+import authRoutes from './auth.js';
+import clientRoutes from './clients.js';
+import matterRoutes from './matters.js';
+import invoiceRoutes from './invoices.js';
+import timeEntryRoutes from './timeEntries.js';
+import taskRoutes from './tasks.js';
+import documentRoutes from './documents.js';
+import communicationRoutes from './communications.js';
+import calendarRoutes from './calendar.js';
+import conflictRoutes from './conflicts.js';
+import reportRoutes from './reports.js';
+import activityRoutes from './activities.js';
+import userRoutes from './users.js';
 
 // Mount routes
 router.use('/auth', authRoutes);
@@ -40,4 +40,4 @@ router.get('/health', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

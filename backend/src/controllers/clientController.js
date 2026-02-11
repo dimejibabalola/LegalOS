@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllClients = async (req, res, next) => {
   try {
@@ -317,7 +317,7 @@ const getClientBilling = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllClients,
   createClient,
   getClientById,

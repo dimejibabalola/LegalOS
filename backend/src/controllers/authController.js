@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const db = require('../config/database');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import db from '../config/database.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
@@ -151,7 +151,7 @@ const getCurrentUser = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   login,
   register,
   getCurrentUser

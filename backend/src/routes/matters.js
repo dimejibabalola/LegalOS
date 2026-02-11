@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const matterController = require('../controllers/matterController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import matterController from '../controllers/matterController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createMatterValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -23,4 +23,4 @@ router.get('/:id/documents', paginationValidation, matterController.getMatterDoc
 router.get('/:id/tasks', paginationValidation, matterController.getMatterTasks);
 router.get('/:id/communications', paginationValidation, matterController.getMatterCommunications);
 
-module.exports = router;
+export default router;

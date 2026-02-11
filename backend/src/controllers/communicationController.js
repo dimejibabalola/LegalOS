@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllCommunications = async (req, res, next) => {
   try {
@@ -231,7 +231,7 @@ const deleteCommunication = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllCommunications,
   createCommunication,
   getCommunicationById,

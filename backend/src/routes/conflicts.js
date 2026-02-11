@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const conflictController = require('../controllers/conflictController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import conflictController from '../controllers/conflictController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   conflictCheckValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -15,4 +15,4 @@ router.post('/check', conflictCheckValidation, conflictController.checkConflicts
 router.get('/', paginationValidation, conflictController.getConflictHistory);
 router.post('/', conflictController.logConflictCheck);
 
-module.exports = router;
+export default router;

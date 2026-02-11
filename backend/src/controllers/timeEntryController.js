@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllTimeEntries = async (req, res, next) => {
   try {
@@ -360,7 +360,7 @@ const getTimeEntrySummary = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllTimeEntries,
   createTimeEntry,
   getTimeEntryById,

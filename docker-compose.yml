@@ -104,7 +104,7 @@ services:
     image: postgres:15-alpine
     container_name: babalola-postgres
     ports:
-      - "5432:5432"
+      - "5434:5432"
     environment:
       - POSTGRES_DB=babalola_legal
       - POSTGRES_USER=postgres
@@ -130,7 +130,7 @@ services:
     image: redis:7-alpine
     container_name: babalola-redis
     ports:
-      - "6379:6379"
+      - "6381:6379"
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data

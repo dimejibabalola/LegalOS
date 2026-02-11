@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const clientController = require('../controllers/clientController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import clientController from '../controllers/clientController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createClientValidation, 
   updateClientValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -22,4 +22,4 @@ router.delete('/:id', clientController.deleteClient);
 router.get('/:id/matters', paginationValidation, clientController.getClientMatters);
 router.get('/:id/billing', clientController.getClientBilling);
 
-module.exports = router;
+export default router;

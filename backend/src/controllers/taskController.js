@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllTasks = async (req, res, next) => {
   try {
@@ -276,7 +276,7 @@ const getTodayTasks = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllTasks,
   createTask,
   getTaskById,

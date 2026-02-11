@@ -1,4 +1,4 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
 const getAllDocuments = async (req, res, next) => {
   try {
@@ -171,7 +171,7 @@ const deleteDocument = async (req, res, next) => {
   }
 };
 
-module.exports = {
+export default {
   getAllDocuments,
   createDocument,
   getDocumentById,

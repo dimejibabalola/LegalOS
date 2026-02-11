@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const activityController = require('../controllers/activityController');
-const { authenticate } = require('../middleware/auth');
-const { paginationValidation } = require('../middleware/validation');
+import activityController from '../controllers/activityController.js';
+import { authenticate } from '../middleware/auth.js';
+import { paginationValidation } from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -12,4 +12,4 @@ router.get('/', paginationValidation, activityController.getAllActivities);
 router.post('/', activityController.logActivity);
 router.get('/recent', activityController.getRecentActivities);
 
-module.exports = router;
+export default router;

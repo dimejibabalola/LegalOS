@@ -1,11 +1,11 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const invoiceController = require('../controllers/invoiceController');
-const { authenticate } = require('../middleware/auth');
-const { 
+import invoiceController from '../controllers/invoiceController.js';
+import { authenticate } from '../middleware/auth.js';
+import { 
   createInvoiceValidation,
   paginationValidation 
-} = require('../middleware/validation');
+} from '../middleware/validation.js';
 
 // All routes require authentication
 router.use(authenticate);
@@ -21,4 +21,4 @@ router.delete('/:id', invoiceController.deleteInvoice);
 router.post('/:id/send', invoiceController.sendInvoice);
 router.post('/:id/pay', invoiceController.payInvoice);
 
-module.exports = router;
+export default router;
